@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments/fragments :: html_head" />
+<body>
+	<div class="page">
+		<!-- Header -->
+		<header th:replace="fragments/header :: html_header" />
+
+		<!-- end header -->
+		<!-- Navbar -->
+		<nav th:replace="fragments/menu :: html_menu" />
+
+		<!-- end nav -->
+		<!-- breadcrumbs -->
+
+		<!-- End breadcrumbs -->
+
+		<!-- Two columns content -->
+		<section class="main-container col2-left-layout">
+			<div class="main container">
+				<div class="row">
+					<section class="col-main col-sm-9 col-sm-push-3 wow">
+						<div class="category-title">
+							<h1>Tất cả Sản phẩm</h1>
+						</div>
+						<!-- category banner -->
+						<div class="category-description std">
+							<div class="slider-items-products">
+								<div id="category-desc-slider"
+									class="product-flexslider hidden-buttons">
+									<div class="slider-items slider-width-col1">
+
+
+
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- category banner -->
+						<div class="category-products">
+							<ul class="products-grid">
+								<li th:each="products :${listProduct}"
+									class="item col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class="col-item">
+										<div class="sale-label sale-top-right">Sale</div>
+										<div class="images-container">
+											<a class="product-image" th:title="${products.name}"
+												th:with="url = ${#strings.replace(products.name,'/','-')}"
+															th:href="@{/sanpham/id/{id}/detail/{dtlId}(id = ${products.id},dtlId = ${url})}"> <img
+												th:src="@{'/'+${products.getImages().get(0).getName()}}"
+												class="img-responsive" alt="a" />
+											</a>
+												<div class="actions">
+														<div class="actions-inner">
+															<button sec:authorize="isAuthenticated()" th:onclick="|addProductToCart('${products.id}')|"
+																type="button" title="Add to Cart"
+																class="button btn-cart">
+																<span>Thêm Giỏ Hàng</span>
+															</button>
+															<button sec:authorize="!isAuthenticated()"
+																type="button" title="Add to Cart"
+																class="button btn-cart">
+																<a th:href="@{/dang-nhap}"><span >Thêm Giỏ Hàng</span></a>
+															</button>
+														</div>
+													</div>
+											<div class="qv-button-container">
+												<a class="qv-e-button btn-quickview-1"
+													href="quick_view.html"><span><span>Quick
+															View</span></span></a>
+											</div>
+										</div>
+										<div class="info">
+											<div class="info-inner">
+												<div class="item-title">
+													<a th:title="${products.name}" th:text="${products.name}"
+														th:with="url = ${#strings.replace(products.name,'/','-')}"
+															th:href="@{/sanpham/id/{id}/detail/{dtlId}(id = ${products.id},dtlId = ${url})}"> </a>
+												</div>
+												<!--item-title-->
+												<div class="item-content">
+													<div class="ratings">
+														<div class="rating-box">
+															<div style="width: 60%" class="rating"></div>
+														</div>
+													</div>
+													<div class="price-box">
+														<p class="special-price">
+															<span class="price" th:text="${#numbers.formatDecimal(products.price, 0, 'COMMA', 0, 'POINT')}"> </span>VND
+														</p>
+														<p class="old-price">
+															<span class="price-sep">-</span> <span
+																th:text="${products.discount}" class="price"> </span>
+														</p>
+													</div>
+												</div>
+												<!--item-content-->
+											</div>
+											<!--info-inner-->
+
+											<!--actions-->
+
+											<div class="clearfix"></div>
+										</div>
+									</div>
+								</li>
+
+							</ul>
+						</div>
+					</section>
+					<aside
+						class="col-left sidebar col-sm-3 col-xs-12 col-sm-pull-9 wow">
+						<div class="side-nav-categories">
+							<div class="block-title">Danh Mục Sản Phẩm</div>
+							<!--block-title-->
+							<!-- BEGIN BOX-CATEGORY -->
+							<div class="box-content box-category">
+								<ul>
+									<li th:each=" brands :${listBrand}"><a
+										th:href="@{/sanpham/the-loai/{category}(category= ${brands.name})}" th:text="${brands.name}"></a> <span
+										class="subDropdown minus"></span>
+										<ul class="level0_415" style="display: block">
+											<li th:each="categories:${brands.category}"><a
+												th:text="${categories.name}" th:href="@{/sanpham/dongtheloai/{categoriesId}(categoriesId= ${categories.id})}"></a></li>
+
+										</ul></li>
+
+								</ul>
+							</div>
+							<!--box-content box-category-->
+						</div>
+
+
+					</aside>
+				</div>
+			</div>
+		</section>
+		<!-- End Two columns content -->
+
+		<!-- Footer -->
+		<footer th:replace="fragments/footer :: html_footer" />
+
+		<!-- End Footer -->
+	</div>
+	<th:block th:replace="fragments/jsfooter :: script" ></th:block>
+	<!-- JavaScript -->
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/common.js"></script>
+	<script type="text/javascript" src="/js/owl.carousel.min.js"></script>
+</body>
+
+</html>
